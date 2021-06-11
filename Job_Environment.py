@@ -5,13 +5,13 @@ from Task_Environment import *
 class job:
     def __init__(self,job_id,time,machines):
         super().__init__()
-        self.E = random.randint(50,200)       # number of epoches
-        self.D = random.randint(5,100)        # number of chunks, i.e., number of tasks in each iteration
-        self.B = random.randint(10,100)       # number of mini-batches in each chunk
+        # self.E = random.randint(50,200)       # number of epoches
+        # self.D = random.randint(5,100)        # number of chunks, i.e., number of tasks in each iteration
+        # self.B = random.randint(10,100)       # number of mini-batches in each chunk
         #simple
-        # self.E = 1
-        # self.D = 2
-        # self.B = 3
+        self.E = random.randint(1,5)
+        self.D = random.randint(5,10)
+        self.B = random.randint(1,10)
 
         self.I = self.E*self.B                # number of iterations
         self.r = time                         # release time

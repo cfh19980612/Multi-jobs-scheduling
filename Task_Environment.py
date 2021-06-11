@@ -10,3 +10,9 @@ class task:
         self.t_s = t_s
         self.Allocate = 0
         self.P = [0 for i in range (machines)]
+
+        # DREAM parameter
+        self.Middle_time = 0   # middle computation finish time
+        self.Real_Allocate = 0
+        self.Real_Start = 0
+        self.Real_Complete = 0
