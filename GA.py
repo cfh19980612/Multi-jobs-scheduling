@@ -174,5 +174,6 @@ def ga(Num_of_Jobs, Num_of_Machines, Jobs):
     plt.ylabel('Fitness Score')
     plt.title('Best Fitness: %d' % bestFitness)
     plt.show()
+    fig.savefig("/home/Multi_tasks_2022/Fig/GA.png")
 
     return bestLP, bestFitness
