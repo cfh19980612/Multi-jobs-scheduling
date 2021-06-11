@@ -113,7 +113,8 @@ def ga(Num_of_Jobs, Num_of_Machines, Jobs):
 
         # Calculate ftiness of each individual in current population and store
         for individual in population:
-            lp_solution, fitness = LP.LP_Solver(individual)
+            # lp_solution, fitness = LP.LP_Solver(individual)
+            LP.LP_Solver(individual)
             new_ind = copy.deepcopy(individual)
             weightedPopulation.append((new_ind,fitness,lp_solution))
 
