@@ -1,7 +1,6 @@
 import gurobipy as gp
 import numpy as np
 import math
-import pygad
 from gurobipy import GRB
 from Job_Environment import *
 from Task_Environment import *
