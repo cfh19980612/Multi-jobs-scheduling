@@ -8,17 +8,33 @@ class job:
         # self.E = random.randint(50,200)       # number of epoches
         # self.D = random.randint(5,100)        # number of chunks, i.e., number of tasks in each iteration
         # self.B = random.randint(10,100)       # number of mini-batches in each chunk
+
         #simple
-        self.E = random.randint(1,5)
+        self.E = random.randint(1,2)
         self.D = random.randint(5,10)
-        self.B = random.randint(1,10)
+        self.B = random.randint(1,4)
+
+        ###########################################################
+        # fixed job scale
+        # self.E = 1
+        # self.D = 2
+        # self.B = 2
+        ###########################################################
 
         self.I = self.E*self.B                # number of iterations
         self.r = time                         # release time
+
         self.Tasks = []
         self.t_c = np.random.rand(machines)
         self.t_s = np.random.rand(machines)
         self.weight = np.random.rand(1)[0]
+
+        ###########################################################
+        # # fixed job parameter
+        # self.t_c = [0.1 for i in range (machines)]
+        # self.t_s = [0.1 for i in range (machines)]
+        # self.weight = 1
+        ###########################################################
 
         # for LP
         for i in range (self.I):

@@ -72,7 +72,9 @@ def FIFO_solver(Jobs, Num_of_Machines):
           break
         j += 1
   for i in range(len(arrive_list)):
-    time_list = arrive_list[i].t_c + arrive_list[i].t_s
+    time_list = []
+    for j in range(len(machine_list)):
+      time_list.append(arrive_list[i].t_c[j] + arrive_list[i].t_s[j])
     if(phyc_time < arrive_list[i].r):
       phyc_time = arrive_list[i].r
     choose_machine_list, phyc_time = min_list(time_list, arrive_list[i].D, machine_list, phyc_time)

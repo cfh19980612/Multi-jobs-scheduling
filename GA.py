@@ -5,13 +5,12 @@ import copy
 from LP import *
 # Function to generate a valid seating arrangement
 def generatePermutation(Num_of_Jobs, Num_of_Machines, Jobs):
-    ini = []
+    length = 0
     for i in range (Num_of_Jobs):
-        for j in range (Jobs[i].I):
-            for k in range (Jobs[i].D):
-                ini.append(np.random.randint(0,Num_of_Machines,1)[0])
+        length += Jobs[i].D * Jobs[i].I
+    Random_allocation = np.random.randint(0,Num_of_Machines,length)
 
-    return ini
+    return Random_allocation
 
 # Function to generate initial population of size POP_SIZE
 def generateInitialPopulation(POP_SIZE, Num_of_Jobs, Num_of_Machines, Jobs):
@@ -21,7 +20,7 @@ def generateInitialPopulation(POP_SIZE, Num_of_Jobs, Num_of_Machines, Jobs):
     return population
 
 # Function to calculate fitness of a solution
-# Selection function
+# Selection parent according to its fitness
 def selectParent(population):
     size = len(population)
 
@@ -31,7 +30,7 @@ def selectParent(population):
     
     # Apply tournament selection method to select parent
     r = random.uniform(0,1)
-    if r<0.75:
+    if r<0.7:
         if solution1[1]>solution2[1]:
             return solution1[0] 
         else:
@@ -69,12 +68,13 @@ def crossover(parent1,parent2):
 def mutate(individual):
     length = len(individual)
 
+    for i in range (20):  # the number of mutation
     # Choose 2 points randomly and swap their values
-    idx = random.randint(0,length-1)
-    i = idx//length
-    j = idx%length
+        idx = random.randint(0,length-1)
+        i = idx//length
+        j = idx%length
 
-    individual[i],individual[j] = individual[j],individual[i]
+        individual[i],individual[j] = individual[j],individual[i]
 
 # Function to check if a solution is valid permuation of integers or not
 def checkSolution(individual,persons):
@@ -99,9 +99,10 @@ def ga(Num_of_Jobs, Num_of_Machines, Jobs):
     bestFitness = 1000000
 
     # Define parameters
-    POP_SIZE = 100  # size of the population
-    NO_GEN = 50    # number of generations
-    MUTATION_PROB = 0.3   # probability of mutation
+    POP_SIZE = 50  # size of the population
+    NO_GEN = 100   # number of generations
+    MUTATION_PROB = 0.9   # probability of mutation
+    CROSS_PROB = 0.9
 
     # Generate initial population
     population = generateInitialPopulation(POP_SIZE, Num_of_Jobs, Num_of_Machines, Jobs)
@@ -113,8 +114,7 @@ def ga(Num_of_Jobs, Num_of_Machines, Jobs):
 
         # Calculate ftiness of each individual in current population and store
         for individual in population:
-            # lp_solution, fitness = LP.LP_Solver(individual)
-            LP.LP_Solver(individual)
+            lp_solution, fitness = LP.LP_Solver(individual)
             new_ind = copy.deepcopy(individual)
             weightedPopulation.append((new_ind,fitness,lp_solution))
 
@@ -124,7 +124,7 @@ def ga(Num_of_Jobs, Num_of_Machines, Jobs):
         population.clear()
 
         # Send top 10% solutions to the next generation without any change (Elitism)
-        for i in range(POP_SIZE//10):
+        for i in range(POP_SIZE//5):
             new_list = copy.deepcopy(weightedPopulation[i][0])
             population.append(new_list)
 
@@ -170,11 +170,11 @@ def ga(Num_of_Jobs, Num_of_Machines, Jobs):
     print("With happiness score:",bestFitness)
 
     # Plot graph mapping generation with its corresponding best solution fitness
-    plt.plot(X,Y,'bo-')
-    plt.xlabel('Generation')
-    plt.ylabel('Fitness Score')
-    plt.title('Best Fitness: %d' % bestFitness)
-    plt.show()
-    fig.savefig("/home/Multi_tasks_2022/Fig/GA.png")
+    # plt.plot(X,Y,'bo-')
+    # plt.xlabel('Generation')
+    # plt.ylabel('Fitness Score')
+    # plt.title('Best Fitness: %d' % bestFitness)
+    # plt.show()
+    # fig.savefig("/home/Multi_tasks_2022/Fig/GA.png")
 
     return bestLP, bestFitness

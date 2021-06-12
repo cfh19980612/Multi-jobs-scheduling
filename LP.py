@@ -25,13 +25,12 @@ class DLJS_LP:
 
         Result = [[[0 for k in range (self.Jobs[i].D)] for j in range (self.Jobs[i].I)] for i in range (self.Num_of_Jobs)]
         # generate a random allocation (API)
-        Allocate = [[[0 for k in range (self.Jobs[i].D)] for j in range (self.Jobs[i].I)] for i in range (self.Num_of_Jobs)]
         idx = 0
         for i in range (self.Num_of_Jobs):
             for j in range (self.Jobs[i].I):
                 for k in range (self.Jobs[i].D):
                     self.Jobs[i].Tasks[j][k].Allocate = solution[idx]
-                    self.Jobs[i].Tasks[j][k].P[self.Jobs[i].Tasks[j][k].Allocate] = 1
+                    self.Jobs[i].Tasks[j][k].P[self.Jobs[i].Tasks[j][k].Allocate] += 1
                     idx += 1
         try:
             # Create a new model

@@ -29,10 +29,10 @@ def DREAM(Jobs, Num_of_Machines, Num_of_Jobs, x_lp):
         limite_time = 0  # initial the limited time according the previous iteration
         if All_tasks[t].iter_id == 0:
             limite_time = Jobs[All_tasks[t].job_id].r
-        elif All_tasks[t].iter_id != 0:
+        elif All_tasks[t].iter_id > 0:
             Previous_task = [0 for i in range (Jobs[All_tasks[t].job_id].D)]  # the finish time of tasks in the previous itertation
             for j in range (Jobs[All_tasks[t].job_id].D):
-                Previous_task[j] = x_lp[All_tasks[t].job_id][All_tasks[t].iter_id - 1][j] + Jobs[All_tasks[t].job_id].Tasks[All_tasks[t].iter_id - 1][j].t_c[Jobs[All_tasks[t].job_id].Tasks[All_tasks[t].iter_id - 1][j].Real_Allocate]\
+                Previous_task[j] = All_tasks[t].Real_Start + Jobs[All_tasks[t].job_id].Tasks[All_tasks[t].iter_id - 1][j].t_c[Jobs[All_tasks[t].job_id].Tasks[All_tasks[t].iter_id - 1][j].Real_Allocate]\
                     + Jobs[All_tasks[t].job_id].Tasks[All_tasks[t].iter_id - 1][j].t_s[Jobs[All_tasks[t].job_id].Tasks[All_tasks[t].iter_id - 1][j].Real_Allocate]
                 limite_time = max(Previous_task)
         # compute the completion time for i task on each machine
