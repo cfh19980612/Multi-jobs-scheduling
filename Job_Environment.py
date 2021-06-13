@@ -11,8 +11,8 @@ class job:
 
         #simple
         self.E = random.randint(1,2)
-        self.D = random.randint(5,10)
-        self.B = random.randint(1,4)
+        self.D = random.randint(5,machines)
+        self.B = random.randint(1,2)
 
         ###########################################################
         # fixed job scale
@@ -25,8 +25,10 @@ class job:
         self.r = time                         # release time
 
         self.Tasks = []
-        self.t_c = np.random.rand(machines)
-        self.t_s = np.random.rand(machines)
+        self.t_c = np.random.randint(1, 6, machines)/100
+        self.t_s = np.random.randint(6, 10, machines)/100
+        # self.t_c = [0.03 for i in range (machines)]
+        # self.t_s = [0.06 for i in range (machines)]
         self.weight = np.random.rand(1)[0]
 
         ###########################################################

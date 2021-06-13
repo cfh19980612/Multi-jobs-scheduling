@@ -1,0 +1,35 @@
+import random
+from LP_M import *
+from LP_X import *
+
+def DLJS_solver(Num_of_Jobs, Num_of_Machines, Jobs):
+    eta = 100
+    optimal_m = []
+    optimal_x = []
+    optimal = 0
+    # generate two linear programming LP_M and LP_X
+    LP_m = LPM(Jobs, Num_of_Jobs, Num_of_Machines)
+    LP_x = LPX(Jobs, Num_of_Jobs, Num_of_Machines)
+
+    # randomly generate a allocation
+    length = 0
+    for i in range (Num_of_Jobs):
+        length += Jobs[i].D * Jobs[i].I
+    optimal_m = np.random.randint(0,Num_of_Machines,length)
+    idx = 0
+    while (eta < 0.9 or eta > 1.02):
+        # step 1
+        temp_x, result_m = LP_m.LP_M_Solver(optimal_m)
+        optimal_x = temp_x
+
+        # step 2
+        temp_m, result_x = LP_x.LP_X_Solver(optimal_x)
+        optimal_m = temp_m
+
+        #step 3
+        eta = result_m/result_x
+
+        optimal = result_x
+        print('round: ', idx+1, ' eta: ', eta, ' LP-bound: ', optimal)
+        idx += 1
+    return optimal_x, optimal

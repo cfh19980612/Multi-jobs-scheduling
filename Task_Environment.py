@@ -11,6 +11,9 @@ class task:
         self.Allocate = 0
         self.P = [0 for i in range (machines)]
 
+        # LP-X parameter
+        self.X_start = 0
+
         # DREAM parameter
         self.Middle_time = 0   # middle computation finish time
         self.Real_Allocate = 0

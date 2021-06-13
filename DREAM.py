@@ -1,6 +1,5 @@
 import numpy as np
 import math
-from LP import *
 from Job_Environment import *
 from Task_Environment import *
 

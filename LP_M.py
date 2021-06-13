@@ -5,14 +5,14 @@ from gurobipy import GRB
 from Job_Environment import *
 from Task_Environment import *
 
-class DLJS_LP:
+class LPM:
     def __init__(self,Jobs, Num_of_Jobs, Num_of_Machines):
         super().__init__()
         self.Jobs = Jobs
         self.Num_of_Jobs = Num_of_Jobs
         self.Num_of_Machines = Num_of_Machines
 
-    def LP_Solver(self, solution):
+    def LP_M_Solver(self, solution):    # solve the LP problem with a given allocation mapping m
         Num_of_jobs = range(self.Num_of_Jobs)
         Num_of_machines = range(self.Num_of_Machines)
 
@@ -34,7 +34,7 @@ class DLJS_LP:
                     idx += 1
         try:
             # Create a new model
-            m = gp.Model("LP")
+            m = gp.Model("LP-M")
             m.setParam('OutputFlag', 0)
 
             # Create variables

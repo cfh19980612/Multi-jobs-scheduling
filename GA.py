@@ -2,7 +2,7 @@ import random
 import matplotlib.pyplot as plt
 import operator
 import copy
-from LP import *
+from LP_M import *
 # Function to generate a valid seating arrangement
 def generatePermutation(Num_of_Jobs, Num_of_Machines, Jobs):
     length = 0
@@ -68,7 +68,7 @@ def crossover(parent1,parent2):
 def mutate(individual):
     length = len(individual)
 
-    for i in range (20):  # the number of mutation
+    for i in range (50):  # the number of mutation
     # Choose 2 points randomly and swap their values
         idx = random.randint(0,length-1)
         i = idx//length
@@ -90,7 +90,7 @@ def checkSolution(individual,persons):
     return True
 
 def ga(Num_of_Jobs, Num_of_Machines, Jobs):
-    LP = DLJS_LP(Jobs, Num_of_Jobs, Num_of_Machines)
+    LP = LPM(Jobs, Num_of_Jobs, Num_of_Machines)
     # Define variables
     X = []
     Y = []
@@ -99,9 +99,9 @@ def ga(Num_of_Jobs, Num_of_Machines, Jobs):
     bestFitness = 1000000
 
     # Define parameters
-    POP_SIZE = 50  # size of the population
-    NO_GEN = 100   # number of generations
-    MUTATION_PROB = 0.9   # probability of mutation
+    POP_SIZE = 10  # size of the population
+    NO_GEN = 20   # number of generations
+    MUTATION_PROB = 0.99   # probability of mutation
     CROSS_PROB = 0.9
 
     # Generate initial population
@@ -114,7 +114,7 @@ def ga(Num_of_Jobs, Num_of_Machines, Jobs):
 
         # Calculate ftiness of each individual in current population and store
         for individual in population:
-            lp_solution, fitness = LP.LP_Solver(individual)
+            lp_solution, fitness = LP.LP_M_Solver(individual)
             new_ind = copy.deepcopy(individual)
             weightedPopulation.append((new_ind,fitness,lp_solution))
 
@@ -124,7 +124,7 @@ def ga(Num_of_Jobs, Num_of_Machines, Jobs):
         population.clear()
 
         # Send top 10% solutions to the next generation without any change (Elitism)
-        for i in range(POP_SIZE//5):
+        for i in range(POP_SIZE//2):
             new_list = copy.deepcopy(weightedPopulation[i][0])
             population.append(new_list)
 
@@ -165,7 +165,6 @@ def ga(Num_of_Jobs, Num_of_Machines, Jobs):
             bestLP = currBestLP
 
     # Output best arrangement obtained after NO_GEN number of generations
-    print()
     print("Best seating arrangement after",NO_GEN,"generations: ")
     print("With happiness score:",bestFitness)
 
