@@ -14,7 +14,7 @@ def DREAM(Jobs, Num_of_Machines, Num_of_Jobs, x_lp):
     for i in range (Num_of_Jobs):
         for j in range (Jobs[i].I):
             for k in range (Jobs[i].D):
-                Jobs[i].Tasks[j][k].Middle_time = x_lp[i][j][k] + max(Jobs[i].t_c)/2
+                Jobs[i].Tasks[j][k].Middle_time = x_lp[i][j][k] + min(Jobs[i].t_c)/2
     # Step 2: Sort tasks according their middle computation finish time
     All_tasks = []
     for i in range (Num_of_Jobs):

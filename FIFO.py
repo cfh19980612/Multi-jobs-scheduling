@@ -80,7 +80,7 @@ def FIFO_solver(Jobs, Num_of_Machines):
     choose_machine_list, phyc_time = min_list(time_list, arrive_list[i].D, machine_list, phyc_time)
     # print(choose_machine_list,phyc_time)
     for j in range(len(choose_machine_list)):
-      machine_list[choose_machine_list[j]] = phyc_time + time_list[choose_machine_list[len(choose_machine_list)-1]]*arrive_list[i].B
+      machine_list[choose_machine_list[j]] = phyc_time + time_list[choose_machine_list[len(choose_machine_list)-1]]*arrive_list[i].I
     job_time.append(machine_list[choose_machine_list[0]])
   
   result = 0

@@ -1,3 +1,4 @@
+from __future__ import division
 import numpy as np
 import itertools
 from FIFO import *
@@ -6,19 +7,19 @@ from Job_Environment import *
 from DREAM import *
 from GA import *
 from DLJS_LP import *
-
+from Allox import *
 
 def run():
-    f = open('result1.txt','a')
-    Num_of_Jobs = 50
+    f = open('result2.txt','a')
+    Num_of_Jobs = 5
     Num_of_Machines = 10
-    strs = 'Fixed_processing_time\n'
+    strs = 'Random_size\n'
     f.write(strs)
 
-    while Num_of_Machines < 110:
+    while Num_of_Jobs < 55:
         # generate jobs
-        release_time = np.random.binomial(2, 0.5, size = Num_of_Jobs)
-        # release_time = [0 for i in range (Num_of_Jobs)]
+        # release_time = np.random.binomial(2, 0.5, size = Num_of_Jobs)
+        release_time = [0 for i in range (Num_of_Jobs)]
 
         Jobs = []
         for i in range (Num_of_Jobs):
@@ -27,6 +28,8 @@ def run():
         # FIFO
         FIFO_result = FIFO_solver(Jobs, Num_of_Machines)
 
+        # Allox
+        Allox_result = Allox_Solver(Jobs,Num_of_Jobs, Num_of_Machines)
         # LP
         # length = 0 # the size of all tasks
         # for i in range (Num_of_Jobs):
@@ -36,10 +39,10 @@ def run():
         # x_lp, LP_result = DLJS_lp.LP_Solver(Random_allocation)
 
         # LP-GA
-        # x_lp, LP_result = ga(Num_of_Jobs, Num_of_Machines, Jobs)
+        x_lp, LP_result = ga(Num_of_Jobs, Num_of_Machines, Jobs)
 
         # DLJS-LP
-        x_lp, LP_result = DLJS_solver(Num_of_Jobs, Num_of_Machines, Jobs)
+        # m_lp, x_lp, LP_result = DLJS_solver(Num_of_Jobs, Num_of_Machines, Jobs)
 
         # LP_M
         # length = 0 # the size of all tasks
@@ -61,21 +64,24 @@ def run():
 
         # print result
 
-        if LP_result < DREAM_result and LP_result < FIFO_result:
-            print('Number of Machines: ',Num_of_Machines)
+        if LP_result <= DREAM_result:
+            print('Number of Jobs: ',Num_of_Jobs)
             print('LP-bound: ', LP_result)
             print('FIFO-schedule: ', FIFO_result)
+            print('Allox-schedule: ', Allox_result)
             print('DREAM: ', DREAM_result)
             # record the result
             start = 'JOBS: ' + str(Num_of_Jobs) + '  '
-            LP_txt = 'LP: ' + str(LP_result) + '  '
-            FIFO_txt = 'FIFO: ' + str(FIFO_result) + '  '
-            DREAM_txt = 'DREAM: ' + str(DREAM_result) + '\n'
+            # LP_txt = 'LP: ' + str(LP_result) + '  '
+            FIFO_txt = 'FIFO: ' + str(FIFO_result/LP_result) + '  '
+            Allox_txt = 'Allox: '+ str(Allox_result/LP_result) + '  '
+            DREAM_txt = 'DREAM: ' + str(DREAM_result/LP_result) + '\n'
             f.write(start)
-            f.write(LP_txt)
+            # f.write(LP_txt)
             f.write(FIFO_txt)
+            f.write(Allox_txt)
             f.write(DREAM_txt)
-            Num_of_Machines += 10
+            Num_of_Jobs += 5
         print()
     f.close()
 if __name__ == "__main__":

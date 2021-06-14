@@ -13,8 +13,6 @@ class LPX:
         self.Num_of_Machines = Num_of_Machines
 
     def LP_X_Solver(self, solution):
-        Num_of_jobs = range(self.Num_of_Jobs)
-        Num_of_machines = range(self.Num_of_Machines)
 
         # initial
         for i in range (self.Num_of_Jobs):
@@ -37,9 +35,9 @@ class LPX:
 
             # Create variables
             x = [None for i in range (self.Num_of_Jobs)]  # start time
-            C = m.addVars(self.Num_of_Jobs, lb = 0, vtype = GRB.CONTINUOUS, name = 'x')  # completion time
+            C = m.addVars(self.Num_of_Jobs, lb = 0, vtype = GRB.CONTINUOUS, name = 'c')  # completion time
             for i in range (self.Num_of_Jobs):
-                x[i] = m.addVars(self.Jobs[i].I, self.Jobs[i].D, self.Num_of_Machines, vtype = GRB.BINARY,name = 'x')
+                x[i] = m.addVars(self.Jobs[i].I, self.Jobs[i].D, self.Num_of_Machines, lb = 0, ub = 1, vtype = GRB.INTEGER,name = 'x')
 
             # constraint 1: sum(x_{i}) = 1
             for i in range (self.Num_of_Jobs):
@@ -47,7 +45,6 @@ class LPX:
                     for k in range (self.Jobs[i].D):
                         m.addConstr(gp.quicksum(x[i][j,k,l] for l in range (self.Num_of_Machines)) == 1)
                             
-
             # for i in range (len(Tasks)):
             #     m.addConstr(x[i] >= Jobs[x[i].job_id].r)
 
@@ -88,13 +85,16 @@ class LPX:
             m.optimize()
             # print('schedule:' ,m.x)
             # print('Obj: %g' % m.objVal)
-            
+            # length = 0
             for i in range (self.Num_of_Jobs):
                 for j in range (self.Jobs[i].I):
                     for k in range (self.Jobs[i].D):
                         for l in range (self.Num_of_Machines):
-                            if x[i][j,k,l].x > 0:
+                            if x[i][j,k,l].x > 0.5:
                                 Result.append(l)
+            # length = 0
+            # for i in range (self.Num_of_Jobs):
+            #     length += self.Jobs[i].I * self.Jobs[i].D
 
             return Result, m.objVal
 

@@ -10,9 +10,9 @@ class job:
         # self.B = random.randint(10,100)       # number of mini-batches in each chunk
 
         #simple
-        self.E = random.randint(1,2)
-        self.D = random.randint(5,machines)
-        self.B = random.randint(1,2)
+        self.E = random.randint(1,3)
+        self.D = random.randint(1,5)
+        self.B = random.randint(1,3)
 
         ###########################################################
         # fixed job scale
@@ -25,16 +25,16 @@ class job:
         self.r = time                         # release time
 
         self.Tasks = []
-        self.t_c = np.random.randint(1, 6, machines)/100
-        self.t_s = np.random.randint(6, 10, machines)/100
+        self.t_c = np.random.randint(1, 10, machines)/100
+        self.t_s = np.random.randint(1, 10, machines)/100
         # self.t_c = [0.03 for i in range (machines)]
         # self.t_s = [0.06 for i in range (machines)]
         self.weight = np.random.rand(1)[0]
 
         ###########################################################
         # # fixed job parameter
-        # self.t_c = [0.1 for i in range (machines)]
-        # self.t_s = [0.1 for i in range (machines)]
+        # self.t_c = [0.4 for i in range (machines)]
+        # self.t_s = [0.6 for i in range (machines)]
         # self.weight = 1
         ###########################################################
 
