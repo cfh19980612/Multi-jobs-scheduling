@@ -31,6 +31,6 @@ def DLJS_solver(Num_of_Jobs, Num_of_Machines, Jobs, Allocation):
         eta = abs(result_m/result_x - 1)
 
         optimal = result_m
-        # print('round: ', idx+1, ' eta: ', eta, ' LP-bound: ', optimal)
+        print('round: ', idx+1, ' eta: ', eta, ' LP-bound: ', optimal)
         idx += 1
     return optimal_m, optimal_x, optimal

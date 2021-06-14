@@ -10,16 +10,16 @@ from DLJS_LP import *
 from Allox import *
 
 def run():
-    f = open('result2.txt','a')
-    Num_of_Jobs = 5
-    Num_of_Machines = 10
-    strs = 'Random_size\n'
+    f = open('/Users/chenfahao/Desktop/Simulation/result4.txt','a')
+    Num_of_Jobs = 100
+    Num_of_Machines = 50
+    strs = 'Random_release\n'
     f.write(strs)
 
-    while Num_of_Jobs < 55:
+    while Num_of_Jobs < 350:
         # generate jobs
-        # release_time = np.random.binomial(2, 0.5, size = Num_of_Jobs)
-        release_time = [0 for i in range (Num_of_Jobs)]
+        release_time = np.random.binomial(10, 0.5, size = Num_of_Jobs)
+        # release_time = [0 for i in range (Num_of_Jobs)]
 
         Jobs = []
         for i in range (Num_of_Jobs):
@@ -39,10 +39,14 @@ def run():
         # x_lp, LP_result = DLJS_lp.LP_Solver(Random_allocation)
 
         # LP-GA
-        x_lp, LP_result = ga(Num_of_Jobs, Num_of_Machines, Jobs)
+        # x_lp, LP_result = ga(Num_of_Jobs, Num_of_Machines, Jobs)
 
         # DLJS-LP
-        # m_lp, x_lp, LP_result = DLJS_solver(Num_of_Jobs, Num_of_Machines, Jobs)
+        length = 0 # the size of all tasks
+        for i in range (Num_of_Jobs):
+            length += Jobs[i].D * Jobs[i].I
+        Random_allocation = np.random.randint(0,Num_of_Machines,length)
+        m_lp, x_lp, LP_result = DLJS_solver(Num_of_Jobs, Num_of_Machines, Jobs, Random_allocation)
 
         # LP_M
         # length = 0 # the size of all tasks
@@ -81,7 +85,7 @@ def run():
             f.write(FIFO_txt)
             f.write(Allox_txt)
             f.write(DREAM_txt)
-            Num_of_Jobs += 5
+            Num_of_Jobs += 25
         print()
     f.close()
 if __name__ == "__main__":
