@@ -1,7 +1,6 @@
 import random
 import numpy as np
 from Job_Environment import *
-from scipy.stats import binom
 
 class Environment:
     def __init__(self, Num_of_machines, Num_of_jobs):
