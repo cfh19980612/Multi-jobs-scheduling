@@ -9,11 +9,12 @@ from GA import *
 from DLJS_LP import *
 from Allox import *
 from Max_Min import *
+from Optimus import *
 
 def run():
-    f = open('/Users/chenfahao/Desktop/Simulation/result_Machines_per.txt','a')
-    Num_of_Jobs = 100
-    Num_of_Machines = 55
+    f = open('/Users/chenfahao/Desktop/Simulation/Test/result_Jobs.txt','a')
+    Num_of_Jobs = 50
+    Num_of_Machines = 30
     strs = 'random\n'
     f.write(strs)
 
@@ -21,10 +22,11 @@ def run():
     Is_FIFO = True
     Is_ALLOX = True
     Is_MM = True
+    Is_Optimus = True
     Is_LP = True
     Is_DREAM = True
 
-    while Num_of_Machines < 70:
+    while Num_of_Jobs < 160:
         # generate jobs
         release_time = np.random.binomial(5, 0.5, size = Num_of_Jobs)
         # release_time = [0 for i in range (Num_of_Jobs)]
@@ -34,14 +36,24 @@ def run():
             Jobs.append(job(i,release_time[i],Num_of_Machines))
             # Jobs[i].Print_job()
         # FIFO
-        if Is_FIFO: FIFO_result = FIFO_solver(Jobs, Num_of_Machines)
+        if Is_FIFO: 
+            FIFO_result = FIFO_solver(Jobs, Num_of_Machines)
+            print('FIFO Complete!')
 
         # Max_Min
-        if Is_MM: MM_result = maxmin(Jobs, Num_of_Jobs, Num_of_Machines)
-        print('MM_end')
+        if Is_MM: 
+            MM_result = maxmin(Jobs, Num_of_Jobs, Num_of_Machines)
+            print('Max-Min Complete!')
+
+        # Optimus
+        if Is_Optimus: 
+            Opt_result = Optimus_Solver(Jobs, Num_of_Jobs, Num_of_Machines)
+            print('Optimus Complete!')
 
         # Allox
-        if Is_ALLOX: Allox_result = Allox_Solver(Jobs,Num_of_Jobs, Num_of_Machines)
+        if Is_ALLOX: 
+            Allox_result = Allox_Solver(Jobs,Num_of_Jobs, Num_of_Machines)
+            print('Allox Complete!')
 
         # LP-GA
             # x_lp, LP_result = ga(Num_of_Jobs, Num_of_Machines, Jobs)
@@ -53,6 +65,7 @@ def run():
                 length += Jobs[i].D * Jobs[i].I
             Random_allocation = np.random.randint(0,Num_of_Machines,length)
             m_lp, x_lp, LP_result = DLJS_solver(Num_of_Jobs, Num_of_Machines, Jobs, Random_allocation)
+            print('LP Complete!')
 
         # LP_M
             # length = 0 # the size of all tasks
@@ -70,44 +83,53 @@ def run():
             # print (m, LP_result)
 
         # DREAM 
-        if Is_DREAM: DREAM_result = DREAM(Jobs, Num_of_Machines, Num_of_Jobs, x_lp)
+        if Is_DREAM: 
+            DREAM_result = DREAM(Jobs, Num_of_Machines, Num_of_Jobs, x_lp)
+            print('DREAM Complete!')
 
         # print result
-
-        if LP_result <= DREAM_result:
+        if Is_LP:
+            if LP_result <= DREAM_result:
         # if True:
-            print('Number of Machines: ',Num_of_Machines)
-            if Is_LP: print('LP-bound: ', LP_result)
-            if Is_FIFO: print('FIFO-schedule: ', FIFO_result)
-            if Is_MM: print('MM-schedule: ', MM_result)
-            if Is_ALLOX: print('Allox-schedule: ', Allox_result)
-            if Is_DREAM:print('DREAM: ', DREAM_result)
+                print('Number of Jobs: ',Num_of_Jobs)
+                # print('Number of Machines: ',Num_of_Machines)
+                if Is_LP: print('LP-bound: ', LP_result)
+                if Is_FIFO: print('FIFO-schedule: ', FIFO_result)
+                if Is_MM: print('MM-schedule: ', MM_result)
+                if Is_Optimus: print('Optimus-schedule: ', Opt_result)
+                if Is_ALLOX: print('Allox-schedule: ', Allox_result)
+                if Is_DREAM:print('DREAM: ', DREAM_result)
 
-            # record the result
-            start = 'Machines: ' + str(Num_of_Machines) + '  '
-            f.write(start)
+                # record the result
+                start = 'Jobs: ' + str(Num_of_Jobs) + '  '
+                # start = 'Machines: ' + str(Num_of_Machines) + '  '
+                f.write(start)
 
-            if Is_LP: 
-                LP_txt = str(LP_result) + '  '
-                f.write(LP_txt)
+                if Is_LP: 
+                    LP_txt = str(LP_result) + '  '
+                    f.write(LP_txt)
 
-            if Is_FIFO: 
-                FIFO_txt = str(FIFO_result) + '  '
-                f.write(FIFO_txt)
+                if Is_FIFO: 
+                    FIFO_txt = str(FIFO_result) + '  '
+                    f.write(FIFO_txt)
 
-            if Is_MM: 
-                MM_txt = str(MM_result) + '  '
-                f.write(MM_txt)
+                if Is_MM: 
+                    MM_txt = str(MM_result) + '  '
+                    f.write(MM_txt)
 
-            if Is_ALLOX: 
-                Allox_txt = str(Allox_result) + '  '
-                f.write(Allox_txt)
-            if Is_DREAM: 
-                DREAM_txt = str(DREAM_result) + '\n'
-                f.write(DREAM_txt)
+                if Is_Optimus: 
+                    Opt_txt = str(Opt_result) + '  '
+                    f.write(Opt_txt)
 
-            Num_of_Machines += 5
-        print()
+                if Is_ALLOX: 
+                    Allox_txt = str(Allox_result) + '  '
+                    f.write(Allox_txt)
+                if Is_DREAM: 
+                    DREAM_txt = str(DREAM_result) + '\n'
+                    f.write(DREAM_txt)
+
+                Num_of_Jobs += 5
+            print()
     f.close()
 if __name__ == "__main__":
     run()

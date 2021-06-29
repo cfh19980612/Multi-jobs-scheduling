@@ -10,14 +10,14 @@ class job:
         # self.B = random.randint(10,100)       # number of mini-batches in each chunk
 
         #simple
-        self.E = random.randint(1,2)
+        self.E = random.randint(1,3)
         self.D = random.randint(1,5)
-        self.B = random.randint(1,2)
+        self.B = random.randint(1,3)
 
         ###########################################################
         # fixed job scale
         # self.E = 1
-        # self.D = 20
+        # self.D = 2
         # self.B = 2
         ###########################################################
 

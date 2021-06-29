@@ -6,7 +6,7 @@ from gurobipy import GRB
 from Job_Environment import *
 import time
 import math
-choose_jobs = 35
+choose_jobs = 10
 
 def add(r_sort_list):
   next_turn_machine_list = []
