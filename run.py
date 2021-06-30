@@ -15,7 +15,7 @@ def run():
     f = open('/Users/chenfahao/Desktop/Simulation/Test/result_Jobs.txt','a')
     Num_of_Jobs = 50
     Num_of_Machines = 30
-    strs = 'random\n'
+    strs = 'fix_scale\n'
     f.write(strs)
 
     # whether algorithms
@@ -26,10 +26,10 @@ def run():
     Is_LP = True
     Is_DREAM = True
 
-    while Num_of_Jobs < 160:
+    while Num_of_Jobs < 135:
         # generate jobs
-        release_time = np.random.binomial(5, 0.5, size = Num_of_Jobs)
-        # release_time = [0 for i in range (Num_of_Jobs)]
+        # release_time = np.random.binomial(5, 0.5, size = Num_of_Jobs)
+        release_time = [0 for i in range (Num_of_Jobs)]
 
         Jobs = []
         for i in range (Num_of_Jobs):

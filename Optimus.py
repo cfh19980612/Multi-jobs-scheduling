@@ -6,7 +6,7 @@ from Job_Environment import *
 from Task_Environment import *
 
 def Optimus_Solver(Jobs, Num_of_Jobs, Num_of_Machines):
-    Selection_scale = 15 # 每一轮选择任务的个数
+    Selection_scale = 100 # 每一轮选择任务的个数
     Time = 0 # 总完成时间
     base_time = 0 # 下一轮开始的基础时间
     Preemption = sorted(range(len(Jobs)), key=lambda x: Jobs[x].r, reverse=False) # 按照到来时间排序
