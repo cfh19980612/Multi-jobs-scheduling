@@ -12,24 +12,27 @@ from Max_Min import *
 from Optimus import *
 
 def run():
-    f = open('/Users/chenfahao/Desktop/Simulation/Test/result_Jobs.txt','a')
-    Num_of_Jobs = 50
-    Num_of_Machines = 30
-    strs = 'fix_scale\n'
+    f = open('/Users/chenfahao/Desktop/Simulation/Test/result_ratio.txt','a')
+    Num_of_Jobs = 100
+    Num_of_Machines = 40
+    # strs = 'random_ratio\n'
+    strs = 'Machine = 40, Job = 100\n'
     f.write(strs)
 
     # whether algorithms
-    Is_FIFO = True
-    Is_ALLOX = True
-    Is_MM = True
-    Is_Optimus = True
+    Is_FIFO = False
+    Is_ALLOX = False
+    Is_MM = False
+    Is_Optimus = False
     Is_LP = True
     Is_DREAM = True
 
-    while Num_of_Jobs < 135:
+    t = 0
+    # while Num_of_Jobs < 72:
+    while t < 11:
         # generate jobs
-        # release_time = np.random.binomial(5, 0.5, size = Num_of_Jobs)
-        release_time = [0 for i in range (Num_of_Jobs)]
+        release_time = np.random.binomial(5, 0.5, size = Num_of_Jobs)
+        # release_time = [0 for i in range (Num_of_Jobs)]
 
         Jobs = []
         for i in range (Num_of_Jobs):
@@ -98,7 +101,7 @@ def run():
                 if Is_MM: print('MM-schedule: ', MM_result)
                 if Is_Optimus: print('Optimus-schedule: ', Opt_result)
                 if Is_ALLOX: print('Allox-schedule: ', Allox_result)
-                if Is_DREAM:print('DREAM: ', DREAM_result)
+                if Is_DREAM:print('DREAM: ', DREAM_result/LP_result)
 
                 # record the result
                 start = 'Jobs: ' + str(Num_of_Jobs) + '  '
@@ -125,10 +128,12 @@ def run():
                     Allox_txt = str(Allox_result) + '  '
                     f.write(Allox_txt)
                 if Is_DREAM: 
-                    DREAM_txt = str(DREAM_result) + '\n'
+                    DREAM_txt = str(DREAM_result/LP_result) + '\n'
                     f.write(DREAM_txt)
 
-                Num_of_Jobs += 5
+                # Num_of_Jobs += 2
+
+                t += 1
             print()
     f.close()
 if __name__ == "__main__":
