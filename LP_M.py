@@ -22,6 +22,7 @@ class LPM:
                         self.Jobs[i].Tasks[j][k].P[l] = 0
 
         Result = [[[0 for k in range (self.Jobs[i].D)] for j in range (self.Jobs[i].I)] for i in range (self.Num_of_Jobs)]
+        Result_Job = [0 for i in range (self.Num_of_Jobs)]
         # generate a random allocation (API)
         idx = 0
         for i in range (self.Num_of_Jobs):
@@ -87,11 +88,12 @@ class LPM:
             # print('Obj: %g' % m.objVal)
             
             for i in range (self.Num_of_Jobs):
+                Result_Job = C[i].x
                 for j in range (self.Jobs[i].I):
                     for k in range (self.Jobs[i].D):
                         Result[i][j][k] = x[i][j,k].x
 
-            return Result, m.objVal
+            return Result, m.objVal, Result_Job
 
         except gp.GurobiError as e:
             print('Error code ' + str(e.errno) + ': ' + str(e))

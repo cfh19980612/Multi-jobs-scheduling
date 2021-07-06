@@ -9,15 +9,15 @@ def DREAM(Jobs, Num_of_Machines, Num_of_Jobs, x_lp):
     DREAM_result = [0 for i in range (Num_of_Jobs)]
     Idle_time = [0 for i in range (Num_of_Machines)]  # initial the idle time for each machine
 
-    for i in range (Num_of_Jobs):
-        if Jobs[i].type == 'VGG16' or 'ResNet50' or 'Inception' or 'LSTM' or 'Transformer':
-            for j in range (Num_of_Machines):
-                Jobs[i].t_c[j] = Jobs[i].t_c[j] * 100
-                Jobs[i].t_s[j] = Jobs[i].t_c[j] * 100
-        elif Jobs[i].type == 'GraphSAGE' or 'FastGCN':
-            for j in range (Num_of_Machines):
-                Jobs[i].t_c[j] = Jobs[i].t_c[j] * 100
-                Jobs[i].t_s[j] = Jobs[i].t_c[j] * 100
+    # for i in range (Num_of_Jobs):
+    #     if Jobs[i].type == 'VGG16' or 'ResNet50' or 'Inception' or 'LSTM' or 'Transformer':
+    #         for j in range (Num_of_Machines):
+    #             Jobs[i].t_c[j] = Jobs[i].t_c[j] * 100
+    #             Jobs[i].t_s[j] = Jobs[i].t_c[j] * 100
+    #     elif Jobs[i].type == 'GraphSAGE' or 'FastGCN':
+    #         for j in range (Num_of_Machines):
+    #             Jobs[i].t_c[j] = Jobs[i].t_c[j] * 100
+    #             Jobs[i].t_s[j] = Jobs[i].t_c[j] * 100
 
     # generate pi
     # Step 1: Compute the middle computation finish time
@@ -67,7 +67,5 @@ def DREAM(Jobs, Num_of_Machines, Num_of_Jobs, x_lp):
                 Temp[i][j][k] = Jobs[i].Tasks[j][k].Real_Complete
         DREAM_result[i] = max(max(Temp[i]))
         result += DREAM_result[i] * Jobs[i].weight
- 
 
-    print(DREAM_result)
-    return result
+    return DREAM_result, result

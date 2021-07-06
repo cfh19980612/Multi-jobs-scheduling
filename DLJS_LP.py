@@ -6,6 +6,7 @@ def DLJS_solver(Num_of_Jobs, Num_of_Machines, Jobs, Allocation):
     eta = 100
     optimal_m = []
     optimal_x = []
+    optimal_j = []
     optimal = 0
     # generate two linear programming LP_M and LP_X
     LP_m = LPM(Jobs, Num_of_Jobs, Num_of_Machines)
@@ -20,7 +21,7 @@ def DLJS_solver(Num_of_Jobs, Num_of_Machines, Jobs, Allocation):
     idx = 0
     while (eta > 0.009):
         # step 1
-        temp_x, result_m = LP_m.LP_M_Solver(optimal_m)
+        temp_x, result_m, optimal_j = LP_m.LP_M_Solver(optimal_m)
         optimal_x = temp_x
 
         # step 2
@@ -33,4 +34,4 @@ def DLJS_solver(Num_of_Jobs, Num_of_Machines, Jobs, Allocation):
         optimal = result_m
         print('round: ', idx+1, ' eta: ', eta, ' LP-bound: ', optimal)
         idx += 1
-    return optimal_m, optimal_x, optimal
+    return optimal_m, optimal_x, optimal, optimal_j
