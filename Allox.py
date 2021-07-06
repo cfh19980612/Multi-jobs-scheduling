@@ -23,6 +23,9 @@ def add_r(P, Jobs, Q, choose_machine_list, Num_of_Jobs, Num_of_Machines):
   machine_list = [0 for a in range(Num_of_Machines)]
   machine_Time = [{} for i in range(Num_of_Machines)]
   time = 0
+
+  jobs_time = [0 for i in range(len(Jobs))]
+
   for i in range(Num_of_Machines):
     for j in range(Num_of_Jobs):
       for k in range(Num_of_Machines * Num_of_Jobs):
@@ -39,13 +42,15 @@ def add_r(P, Jobs, Q, choose_machine_list, Num_of_Jobs, Num_of_Machines):
       # print(machine_Time[i][len(machine_Time[i]) - j])
       if(Jobs[machine_Time[i][len(machine_Time[i]) - j]].r > machine_list[i]):
         machine_list[i] = Jobs[machine_Time[i][len(machine_Time[i]) - j]].r + P[machine_Time[i][len(machine_Time[i]) - j]][i]
+        jobs_time[machine_Time[i][len(machine_Time[i]) - j]] = machine_list[i]
         time += machine_list[i] * Jobs[machine_Time[i][len(machine_Time[i]) - j]].weight
       else:
         # print(len(machine_list))
         machine_list[i] = machine_list[i] + P[machine_Time[i][len(machine_Time[i]) - j]][i]
+        jobs_time[machine_Time[i][len(machine_Time[i]) - j]] = machine_list[i]
         time += machine_list[i] * Jobs[machine_Time[i][len(machine_Time[i]) - j]].weight
-  # print(machine_list)
-  return time
+  # print(jobs_time, time)
+  return jobs_time, time
 def Allox_Solver(Jobs, Num_of_Jobs, Num_of_Machines):
   try:
     P,Q = make_Matrix(Jobs, Num_of_Jobs, Num_of_Machines)

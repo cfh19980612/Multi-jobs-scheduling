@@ -55,6 +55,7 @@ def intl_machine_list(weight_sort_list, next_turn_machine_list, job_machine_list
   # print(job_machine_list_copy, job_machine_list_bin, r_sort_list)
   return job_machine_list_copy, job_machine_list_bin, r_sort_list
 def divide_Machine_to_Job(Jobs, Num_of_Jobs, Num_of_Machines):
+  jobs_time = [0 for i in range(len(Jobs))]
   total_time = 0
   r_sort_list = []
   max_r = 0
@@ -146,14 +147,15 @@ def divide_Machine_to_Job(Jobs, Num_of_Jobs, Num_of_Machines):
     job_machine_list, job_machine_list_bin, r_sort_list = intl_machine_list(weight_sort_list, next_turn_machine_list, job_machine_list, job_machine_list_bin, r_sort_list)
     # print(machine_free_time)
     # print(next_turn_machine_list, job_machine_list, job_machine_list_bin,r_sort_list, Num_of_Machines)
-    machine_free_time, total_time_copy = gurobi(machine_free_time, next_turn_machine_list, job_machine_list, Jobs, Num_of_Machines)
+    jobs_time, machine_free_time, total_time_copy = gurobi(machine_free_time, next_turn_machine_list, job_machine_list, Jobs, Num_of_Machines, jobs_time)
     # print(machine_free_time)
     total_time += total_time_copy
-  # print(total_time)
-  return total_time
+  # print(jobs_time, total_time)
+  return jobs_time, total_time
 
-def gurobi(machine_free_time, next_turn_machine_list, job_machine_list, Jobs,  Num_of_Machines):
+def gurobi(machine_free_time, next_turn_machine_list, job_machine_list, Jobs,  Num_of_Machines, jobs_time):
   #print(machine_free_time)
+  # job_time = [0 for i in range(len(next_turn_machine_list))]
   try:
     max_time_1 = 0.0
     if(job_machine_list.count(0) != 0):
@@ -216,6 +218,7 @@ def gurobi(machine_free_time, next_turn_machine_list, job_machine_list, Jobs,  N
         # max_time = 0
         # max_time_number = 0
         list_r = m.getAttr('x', C_MAX_REAL)
+        # job_time = m.getAttr('y', C_MAX_REAL)
         # print(list_r)
         for i in range(len(list_r)):
           # print(type(list_r[i]))
@@ -229,12 +232,17 @@ def gurobi(machine_free_time, next_turn_machine_list, job_machine_list, Jobs,  N
       if(machine_free_time > Jobs[next_turn_machine_list[i]].r):
         max_time_1 = Jobs[next_turn_machine_list[0]].weight*((machine_free_time + (Jobs[next_turn_machine_list[0]].t_s[0]+Jobs[next_turn_machine_list[0]].t_c[0]*job_machine_list_copy[0])*Jobs[next_turn_machine_list[0]].E*Jobs[next_turn_machine_list[0]].B))
         max_time_2 = ((machine_free_time + (Jobs[next_turn_machine_list[0]].t_s[0]+Jobs[next_turn_machine_list[0]].t_c[0]*job_machine_list_copy[0])*Jobs[next_turn_machine_list[0]].E*Jobs[next_turn_machine_list[0]].B))
+        jobs_time[next_turn_machine_list[0]] = ((machine_free_time + (Jobs[next_turn_machine_list[0]].t_s[0]+Jobs[next_turn_machine_list[0]].t_c[0]*job_machine_list_copy[0])*Jobs[next_turn_machine_list[0]].E*Jobs[next_turn_machine_list[0]].B))
       else:
         max_time_1 = Jobs[next_turn_machine_list[0]].weight*((Jobs[next_turn_machine_list[0]].r + (Jobs[next_turn_machine_list[0]].t_s[0]+Jobs[next_turn_machine_list[0]].t_c[0]*job_machine_list_copy[0])*Jobs[next_turn_machine_list[0]].E*Jobs[next_turn_machine_list[0]].B))
+        
         max_time_2 = ((Jobs[next_turn_machine_list[0]].r + (Jobs[next_turn_machine_list[0]].t_s[0]+Jobs[next_turn_machine_list[0]].t_c[0]*job_machine_list_copy[0])*Jobs[next_turn_machine_list[0]].E*Jobs[next_turn_machine_list[0]].B))
-      return max_time_1, max_time_2
+        jobs_time[next_turn_machine_list[0]] = ((Jobs[next_turn_machine_list[0]].r + (Jobs[next_turn_machine_list[0]].t_s[0]+Jobs[next_turn_machine_list[0]].t_c[0]*job_machine_list_copy[0])*Jobs[next_turn_machine_list[0]].E*Jobs[next_turn_machine_list[0]].B))
+      return jobs_time, max_time_1, max_time_2
     # print(max_time_1, m.objVal)
-    return max_time_1, m.objVal
+    for i in range(len(next_turn_machine_list)):
+      jobs_time[next_turn_machine_list[i]] =  list_r[i]
+    return jobs_time, max_time_1, m.objVal
     # return m.objVal
 
   except gp.GurobiError as e:

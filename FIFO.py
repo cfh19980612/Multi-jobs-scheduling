@@ -161,25 +161,32 @@ def FIFO_solver(Jobs, Num_of_Machines):
   machine_list = [0 for i in range(Num_of_Machines)] # the situation of machine
   time_list = []
   phyc_time = 0
-  job_time = []
+  job_time = [0 for i in range(len(Jobs))]
   max_time = 0
   
+  job_list = []
+
   for i in range(len(Jobs)):
     j=0
     if(Jobs[i].r > max_time or len(arrive_list) == 0 or Jobs[i].r == max_time):  # put the lately arriving jobs to the end of list or init the first jobs to the list
       arrive_list.append(Jobs[i])
+      job_list.append(i)
       max_time = Jobs[i].r
     elif(Jobs[i].r < arrive_list[j].r ): # put the earlly arriving jobs to the head of list
       arrive_list.insert(0, Jobs[i])
+      job_list.insert(0,i)
     elif(Jobs[i].r == arrive_list[j].r):
       arrive_list.insert(j+1,Jobs[i])
+      job_list.insert(j+1,i)
     else:
       while(Jobs[i].r > arrive_list[j].r):  # put the arriving jobs to the middle of list
         if(Jobs[i].r < arrive_list[j+1].r):
           arrive_list.insert(j+1,Jobs[i])
+          job_list.insert(j+1,i)
           break
         if(Jobs[i].r == arrive_list[j+1].r):
           arrive_list.insert(j+2,Jobs[i])
+          job_list.insert(j+2,i)
           break
         j += 1
   for i in range(len(arrive_list)):
@@ -196,12 +203,12 @@ def FIFO_solver(Jobs, Num_of_Machines):
       machine_list[choose_machine_list[j]] = phyc_time + time_list[choose_machine_list[len(choose_machine_list)-1]]*arrive_list[i].I
       machine_uti[choose_machine_list[j]].append(machine_list[choose_machine_list[j]])
     # print(choose_machine_list,phyc_time,machine_list)
-    job_time.append(machine_list[choose_machine_list[0]])
+    job_time[job_list[i]] = machine_list[choose_machine_list[0]]
     # print(machine_list,choose_machine_list,phyc_time,job_time)
   result = 0
   for i in range (len(Jobs)):
     result += job_time[i]*Jobs[i].weight
-  # print(machine_uti)
+  # print(job_time, result)
   # picture(machine_uti)
-  return result
+  return job_time, result
   #time
