@@ -10,13 +10,14 @@ from DLJS_LP import *
 from Allox import *
 from Max_Min import *
 from Optimus import *
+from Real_trace import *
 
 def run():
     f = open('/Users/chenfahao/Desktop/Simulation/Test/result_ratio.txt','a')
-    Num_of_Jobs = 100
+    Num_of_Jobs = 40
     Num_of_Machines = 40
     # strs = 'random_ratio\n'
-    strs = 'Machine = 40, Job = 100\n'
+    strs = 'Machine = 40, Job = 30\n'
     f.write(strs)
 
     # whether algorithms
@@ -28,8 +29,7 @@ def run():
     Is_DREAM = True
 
     t = 0
-    # while Num_of_Jobs < 72:
-    while t < 11:
+    while Num_of_Jobs < 72:
         # generate jobs
         release_time = np.random.binomial(5, 0.5, size = Num_of_Jobs)
         # release_time = [0 for i in range (Num_of_Jobs)]

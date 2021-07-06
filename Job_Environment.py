@@ -11,7 +11,7 @@ class job:
 
         #simple
         self.E = random.randint(1,3)
-        self.D = random.randint(1,5)
+        self.D = random.randint(1,15)
         self.B = random.randint(1,3)
 
         ###########################################################
