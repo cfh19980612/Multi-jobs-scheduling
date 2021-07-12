@@ -21,11 +21,11 @@ def DLJS_solver(Num_of_Jobs, Num_of_Machines, Jobs, Allocation):
     idx = 0
     while (eta > 0.009):
         # step 1
-        temp_x, result_m, optimal_j = LP_m.LP_M_Solver(optimal_m)
+        temp_x, result_m = LP_m.LP_M_Solver(optimal_m)
         optimal_x = temp_x
 
         # step 2
-        temp_m, result_x = LP_x.LP_X_Solver(optimal_x)
+        temp_m, result_x, optimal_j = LP_x.LP_X_Solver(optimal_x)
         optimal_m = temp_m
 
         #step 3

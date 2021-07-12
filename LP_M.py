@@ -38,7 +38,7 @@ class LPM:
 
             # Create variables
             x = [None for i in range (self.Num_of_Jobs)]  # start time
-            C = m.addVars(self.Num_of_Jobs, lb = 0, vtype = GRB.CONTINUOUS, name = 'x')  # completion time
+            C = m.addVars(self.Num_of_Jobs, lb = 0, vtype = GRB.CONTINUOUS, name = 'c')  # completion time
             for i in range (self.Num_of_Jobs):
                 x[i] = m.addVars(self.Jobs[i].I, self.Jobs[i].D, lb = 0, vtype = GRB.CONTINUOUS,name = 'x')
 
@@ -88,12 +88,12 @@ class LPM:
             # print('Obj: %g' % m.objVal)
             
             for i in range (self.Num_of_Jobs):
-                Result_Job = C[i].x
+                Result_Job[i] = C[i].x
                 for j in range (self.Jobs[i].I):
                     for k in range (self.Jobs[i].D):
                         Result[i][j][k] = x[i][j,k].x
-
-            return Result, m.objVal, Result_Job
+        
+            return Result, m.objVal
 
         except gp.GurobiError as e:
             print('Error code ' + str(e.errno) + ': ' + str(e))
